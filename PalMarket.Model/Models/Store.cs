@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PalMarket.Model
+{
+    public class Store
+    {
+        public int StoreID { get; set; }
+        public string Name { get; set; }
+        public string QRCode { get; set; }
+        public DateTime? DateCreated { get; set; }
+        public DateTime? DateUpdated { get; set; }
+        public byte[] Image { get; set; }
+        public string ImageFileName { get; set; }
+
+        public virtual List<Offer> Offers { get; set; }
+        public virtual List<User> Users { get; set; }
+        public virtual List<StoreDevice> StoreDevices { get; set; }
+
+        public Store()
+        {
+            DateCreated = DateTime.UtcNow;
+        }
+    }
+}
