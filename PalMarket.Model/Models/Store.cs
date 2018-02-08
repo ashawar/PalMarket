@@ -16,8 +16,7 @@ namespace PalMarket.Model
         public byte[] Image { get; set; }
         public string ImageFileName { get; set; }
 
-        public virtual List<Offer> Offers { get; set; }
-        public virtual List<User> Users { get; set; }
+        public virtual List<Branch> Branches { get; set; }
         public virtual List<StoreDevice> StoreDevices { get; set; }
 
         public Store()

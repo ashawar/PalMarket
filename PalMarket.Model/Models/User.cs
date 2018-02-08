@@ -16,8 +16,8 @@ namespace PalMarket.Model
         public DateTime? DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
 
-        public int StoreID { get; set; }
-        public Store Store { get; set; }
+        public int BranchID { get; set; }
+        public Branch Branch { get; set; }
 
         public User()
         {

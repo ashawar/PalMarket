@@ -16,26 +16,33 @@ namespace PalMarket.Data.Repositories
 
         public IEnumerable<DetailedStore> GetStores(string deviceCode)
         {
+            //this.DbContext.Configuration.AutoDetectChangesEnabled = false;
+            //this.DbContext.Configuration.LazyLoadingEnabled = false;
+            //this.DbContext.Configuration.ProxyCreationEnabled = false;
+            //this.DbContext.Configuration.ValidateOnSaveEnabled = false;
+
             var lst = (from a in this.DbContext.Stores
                        select new
                        {
                            StoreID = a.StoreID,
                            Name = a.Name,
-                           ImageUrl = "",
+                           Image = a.Image,
                            QRCode = a.QRCode,
                            DateCreated = a.DateCreated,
                            DateUpdated = a.DateUpdated,
-                           IsSubscribed = a.StoreDevices.FirstOrDefault(b => b.Device != null && b.Device.DeviceCode == deviceCode) != null
+                           IsSubscribed = a.StoreDevices.FirstOrDefault(b => b.Device != null && b.Device.DeviceCode == deviceCode) != null,
+                           Branches = a.Branches//.Select(b => new Branch { BranchID = b.BranchID, Location = b.Location, Longitude = b.Longitude, Latitude = b.Latitude, City = b.City })
                        }).ToList()
                        .Select(a => new DetailedStore()
                        {
                            StoreID = a.StoreID,
                            Name = a.Name,
-                           ImageUrl = a.ImageUrl,
+                           Image = a.Image,
                            QRCode = a.QRCode,
                            DateCreated = a.DateCreated,
                            DateUpdated = a.DateUpdated,
-                           IsSubscribed = a.IsSubscribed
+                           IsSubscribed = a.IsSubscribed,
+                           Branches = a.Branches
                        });
 
             return lst;

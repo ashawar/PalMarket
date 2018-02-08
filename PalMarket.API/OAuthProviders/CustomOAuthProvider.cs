@@ -47,7 +47,7 @@ namespace PalMarket.API.OAuthProviders
                 identity.AddClaim(new Claim(ClaimTypes.Name, user.FirstName));
                 identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
                 identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
-                identity.AddClaim(new Claim("StoreID", user.StoreID.ToString()));
+                identity.AddClaim(new Claim("BranchID", user.BranchID.ToString()));
 
                 var properties = CreateProperties(user, context);
                 var ticket = new AuthenticationTicket(identity, properties);
@@ -65,7 +65,7 @@ namespace PalMarket.API.OAuthProviders
             var username = user.Username;
             var firstName = user.FirstName;
             var lastName = user.LastName;
-            var storeID = user.StoreID;
+            var branchID = user.BranchID;
 
             IDictionary<string, string> data = new Dictionary<string, string>
             {
@@ -85,7 +85,7 @@ namespace PalMarket.API.OAuthProviders
                     "lastName", lastName
                 },
                 {
-                    "storeId", storeID.ToString()
+                    "branchId", branchID.ToString()
                 }
             };
             return new AuthenticationProperties(data);

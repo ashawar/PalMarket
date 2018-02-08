@@ -10,7 +10,7 @@ namespace PalMarket.Domain.Contracts.Services
     // Operations you want to expose
     public interface IOfferService
     {
-        IEnumerable<Offer> GetStoreOffers(int storeID);
+        IEnumerable<Offer> GetBranchOffers(int branchID);
         Offer GetOffer(int offerID);
         void AddOffer(Offer offer);
         void UpdateOffer(Offer offer);

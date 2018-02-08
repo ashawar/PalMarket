@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace PalMarket.Data.Configuration
 {
-    public class DetailedStoreConfiguration : EntityTypeConfiguration<DetailedStore>
+    public class CityConfiguration : EntityTypeConfiguration<City>
     {
-        public DetailedStoreConfiguration()
+        public CityConfiguration()
         {
-            Ignore(a => a.IsSubscribed);
+            ToTable("Cities");
+            Property(g => g.Name).IsRequired().HasMaxLength(100);
         }
     }
 }

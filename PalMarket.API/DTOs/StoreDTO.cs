@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PalMarket.API.DTOs
@@ -14,5 +15,6 @@ namespace PalMarket.API.DTOs
         public DateTime? DateUpdated { get; set; }
         public string ImageUrl { get; set; }
         public bool? IsSubscribed { get; set; }
+        public IEnumerable<BranchDTO> Branches { get; set; }
     }
 }

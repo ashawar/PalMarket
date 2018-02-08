@@ -34,16 +34,16 @@ namespace PalMarket.API.Controllers
             IEnumerable<DetailedStore> stores;
 
             stores = storeService.GetStores(deviceCode);
-            storesDTO = Mapper.Map<IEnumerable<DetailedStore>, IEnumerable<StoreDTO>>(stores);
 
             string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image?id=";
-            storesDTO = storesDTO.Select(a => new StoreDTO
+            storesDTO = stores.Select(a => new StoreDTO
             {
                 StoreID = a.StoreID,
                 Name = a.Name,
                 QRCode = a.QRCode,
                 IsSubscribed = a.IsSubscribed,
-                ImageUrl = baseImageUrl + a.StoreID,
+                Branches = a.Branches.Select(b => new BranchDTO { BranchID = b.BranchID, Location = b.Location, City = b.City != null ? b.City.Name : null, Longitude = b.Longitude, Latitude = b.Latitude }),
+                ImageUrl = a.Image != null ? baseImageUrl + a.StoreID : null,
                 DateCreated = a.DateCreated,
                 DateUpdated = a.DateUpdated
             });

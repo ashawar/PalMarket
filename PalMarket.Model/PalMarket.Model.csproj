@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="DetailedModels\DetailedStore.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\StoreDevice.cs" />
     <Compile Include="Models\Device.cs" />

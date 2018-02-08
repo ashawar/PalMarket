@@ -203,6 +203,8 @@
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\OfferController.cs" />
+    <Compile Include="DTOs\BranchDTO.cs" />
+    <Compile Include="DTOs\CityDTO.cs" />
     <Compile Include="DTOs\SubscribeDTO.cs" />
     <Compile Include="DTOs\DeviceDTO.cs" />
     <Compile Include="DTOs\StoreDTO.cs" />

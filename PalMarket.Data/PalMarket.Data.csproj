@@ -49,7 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\DetailedStoreConfiguration.cs" />
+    <Compile Include="Configuration\CityConfiguration.cs" />
+    <Compile Include="Configuration\BranchConfiguration.cs" />
     <Compile Include="Configuration\StoreDeviceConfiguration.cs" />
     <Compile Include="Configuration\UserConfiguration.cs" />
     <Compile Include="Configuration\StoreConfiguration.cs" />

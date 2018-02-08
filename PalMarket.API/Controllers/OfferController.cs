@@ -34,13 +34,12 @@ namespace PalMarket.API.Controllers
             IEnumerable<OfferDTO> offersDTO;
             IEnumerable<Offer> offers;
 
-            int storeID = this.getStoreID();
+            int branchID = this.getBranchID();
 
-            offers = offerService.GetStoreOffers(storeID);
-            offersDTO = Mapper.Map<IEnumerable<Offer>, IEnumerable<OfferDTO>>(offers);
+            offers = offerService.GetBranchOffers(branchID);
 
             string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image?id=";
-            offersDTO = offersDTO.Select(a => new OfferDTO
+            offersDTO = offers.Select(a => new OfferDTO
             {
                 OfferID = a.OfferID,
                 Name = a.Name,
@@ -48,7 +47,7 @@ namespace PalMarket.API.Controllers
                 NewPrice = a.NewPrice,
                 DateStart = a.DateStart,
                 DateEnd = a.DateEnd,
-                ImageUrl = baseImageUrl + a.OfferID,
+                ImageUrl = a.Image != null ? baseImageUrl + a.OfferID : null,
                 DateCreated = a.DateCreated,
                 DateUpdated = a.DateUpdated
             });
@@ -56,18 +55,17 @@ namespace PalMarket.API.Controllers
             return Ok(offersDTO);
         }
 
-        // GET: api/Offer?storeID=1
+        // GET: api/Offer?branchID=1
         [AllowAnonymous]
-        public IHttpActionResult GetOffers(int storeID)
+        public IHttpActionResult GetOffers(int branchID)
         {
             IEnumerable<OfferDTO> offersDTO;
             IEnumerable<Offer> offers;
 
-            offers = offerService.GetStoreOffers(storeID);
-            offersDTO = Mapper.Map<IEnumerable<Offer>, IEnumerable<OfferDTO>>(offers);
+            offers = offerService.GetBranchOffers(branchID);
 
             string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image?id=";
-            offersDTO = offersDTO.Select(a => new OfferDTO
+            offersDTO = offers.Select(a => new OfferDTO
             {
                 OfferID = a.OfferID,
                 Name = a.Name,
@@ -75,7 +73,7 @@ namespace PalMarket.API.Controllers
                 NewPrice = a.NewPrice,
                 DateStart = a.DateStart,
                 DateEnd = a.DateEnd,
-                ImageUrl = baseImageUrl + a.OfferID,
+                ImageUrl = a.Image != null ? baseImageUrl + a.OfferID : null,
                 DateCreated = a.DateCreated,
                 DateUpdated = a.DateUpdated
             });
@@ -97,7 +95,7 @@ namespace PalMarket.API.Controllers
 
             offerDTO = Mapper.Map<Offer, OfferDTO>(offer);
             string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image?id=";
-            offerDTO.ImageUrl = baseImageUrl + offerDTO.OfferID;
+            offerDTO.ImageUrl = offer.Image != null ? baseImageUrl + offerDTO.OfferID : null;
 
             return Ok(offerDTO);
         }
@@ -155,7 +153,7 @@ namespace PalMarket.API.Controllers
         {
             offerDTO.DateCreated = DateTime.UtcNow;
             Offer offer = Mapper.Map<OfferDTO, Offer>(offerDTO);
-            offer.StoreID = this.getStoreID();
+            offer.BranchID = this.getBranchID();
 
             //if (offerDTO.File != null)
             //{
@@ -222,10 +220,10 @@ namespace PalMarket.API.Controllers
             return Ok(offerDTO);
         }
 
-        private int getStoreID()
+        private int getBranchID()
         {
             var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
-            return Convert.ToInt32(identity.Claims.AsQueryable().FirstOrDefault(a => a.Type == "StoreID").Value);
+            return Convert.ToInt32(identity.Claims.AsQueryable().FirstOrDefault(a => a.Type == "BranchID").Value);
         }
     }
 }

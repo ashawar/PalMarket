@@ -19,8 +19,8 @@ namespace PalMarket.Model
         public byte[] Image { get; set; }
         public string ImageFileName { get; set; }
 
-        public int StoreID { get; set; }
-        public Store Store { get; set; }
+        public int BranchID { get; set; }
+        public Branch Branch { get; set; }
 
         public Offer()
         {

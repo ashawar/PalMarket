@@ -17,7 +17,7 @@ namespace PalMarket.Data.Configuration
             Property(g => g.LastName).IsRequired().HasMaxLength(50);
             Property(g => g.Username).IsRequired().HasMaxLength(50);
             Property(g => g.PasswordHash).IsRequired();
-            Property(g => g.StoreID).IsRequired();
+            Property(g => g.BranchID).IsRequired();
         }
     }
 }

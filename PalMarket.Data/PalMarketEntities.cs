@@ -18,6 +18,8 @@ namespace PalMarket.Data
         public DbSet<Device> Devices { get; set; }
         public DbSet<StoreDevice> StoreDevices { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Branch> Branches { get; set; }
 
         public virtual void Commit()
         {
@@ -28,7 +30,6 @@ namespace PalMarket.Data
         {
             modelBuilder.Configurations.Add(new OfferConfiguration());
             modelBuilder.Configurations.Add(new StoreConfiguration());
-            modelBuilder.Configurations.Add(new DetailedStoreConfiguration());
             modelBuilder.Configurations.Add(new DeviceConfiguration());
             modelBuilder.Configurations.Add(new StoreDeviceConfiguration());
             modelBuilder.Configurations.Add(new UserConfiguration());

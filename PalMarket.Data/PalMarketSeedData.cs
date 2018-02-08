@@ -17,31 +17,64 @@ namespace PalMarket.Data
         {
             dbContext = context;
 
+            City city = AddCities();
             Store store = AddStore();
-            User user = AddUser(store);
+            Branch branch = AddBranch(store, city);
+            User user = AddUser(branch);
 
             context.Commit();
+        }
+
+        private City AddCities()
+        {
+            IEnumerable<City> cities = dbContext.Cities.AddRange(new List<City>
+            {
+                new City { Name = "أريحا" },
+                new City { Name = "الخليل" },
+                new City { Name = "القدس" },
+                new City { Name = "بيت لحم" },
+                new City { Name = "جنين" },
+                new City { Name = "رام الله والبيرة" },
+                new City { Name = "سلفيت" },
+                new City { Name = "طوباس" },
+                new City { Name = "طولكرم" },
+                new City { Name = "قلقيلية" },
+                new City { Name = "نابلس" }
+            });
+
+            dbContext.Commit();
+            return cities.FirstOrDefault(a => a.Name == "رام الله والبيرة");
         }
 
         private Store AddStore()
         {
             return dbContext.Stores.Add(new Store()
             {
-                Name = "Test Store",
-                QRCode = "12345",
+                Name = "Store1",
+                QRCode = "store1",
                 DateCreated = DateTime.UtcNow
             });
         }
 
-        private User AddUser(Store store)
+        private Branch AddBranch(Store store, City city)
+        {
+            return dbContext.Branches.Add(new Branch()
+            {
+                Location = "البالوع",
+                StoreID = store.StoreID,
+                CityID = city.CityID
+            });
+        }
+
+        private User AddUser(Branch branch)
         {
             return dbContext.Users.Add(new User()
             {
                 FirstName = "Admin",
                 LastName = "Admin",
-                Username = "admin",
-                PasswordHash = SecurityHelper.HashPassword("admin"),
-                StoreID = store.StoreID,
+                Username = "store1",
+                PasswordHash = SecurityHelper.HashPassword("store1"),
+                BranchID = branch.BranchID,
                 DateCreated = DateTime.UtcNow
             });
         }

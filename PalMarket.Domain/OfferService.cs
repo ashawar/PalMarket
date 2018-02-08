@@ -23,9 +23,9 @@ namespace PalMarket.Domain
 
         #region IOfferService Members
 
-        public IEnumerable<Offer> GetStoreOffers(int storeID)
+        public IEnumerable<Offer> GetBranchOffers(int branchID)
         {
-            return offerRepository.GetMany(a => a.StoreID == storeID);
+            return offerRepository.GetMany(a => a.BranchID == branchID);
         }
 
         public Offer GetOffer(int offerID)
