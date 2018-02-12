@@ -7,7 +7,7 @@ namespace PalMarket.API.DTOs
     {
 
         public int? DeviceID { get; set; }
-        [Required, MaxLength(100)]
+        [MaxLength(100)]
         public string DeviceCode { get; set; }
         [MaxLength(100)]
         public string RegisterID { get; set; }

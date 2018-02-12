@@ -32,6 +32,7 @@ namespace PalMarket.API.Controllers
         public IHttpActionResult PostDevice([FromBody] DeviceDTO deviceDTO)
         {
             deviceDTO.DateCreated = DateTime.UtcNow;
+            deviceDTO.DeviceCode = Guid.NewGuid().ToString();
             Device device = Mapper.Map<DeviceDTO, Device>(deviceDTO);
 
             deviceService.AddDevice(device);
