@@ -35,14 +35,14 @@ namespace PalMarket.API.Controllers
 
             stores = storeService.GetStores(deviceCode);
 
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image?id=";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image/";
             storesDTO = stores.Select(a => new StoreDTO
             {
                 StoreID = a.StoreID,
                 Name = a.Name,
                 QRCode = a.QRCode,
                 IsSubscribed = a.IsSubscribed,
-                Branches = a.Branches.Select(b => new BranchDTO { BranchID = b.BranchID, Location = b.Location, City = b.City != null ? b.City.Name : null, Longitude = b.Longitude, Latitude = b.Latitude }),
+                Branches = a.Branches.Select(b => new BranchDTO { BranchID = b.BranchID, Location = b.Location, City = b.City != null ? b.City.Name : null, CityID = b.CityID, Longitude = b.Longitude, Latitude = b.Latitude, Store = b.Store != null ? b.Store.Name : null, StoreID = b.StoreID }),
                 ImageUrl = a.Image != null ? baseImageUrl + a.StoreID : null,
                 DateCreated = a.DateCreated,
                 DateUpdated = a.DateUpdated
@@ -66,15 +66,15 @@ namespace PalMarket.API.Controllers
 
             storeDTO = Mapper.Map<Store, StoreDTO>(store);
 
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image?id=";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image/";
             storeDTO.ImageUrl = baseImageUrl + storeDTO.StoreID;
 
             return Ok(storeDTO);
         }
 
-        // POST: api/Store/Image?id=5
+        // POST: api/Store/Image/5
         [HttpPost]
-        [Route("Image")]
+        [Route("Image/{id}")]
         [AllowAnonymous]
         public IHttpActionResult UploadImage(int id)
         {
@@ -103,9 +103,9 @@ namespace PalMarket.API.Controllers
             return Ok();
         }
 
-        // GET: api/Store/Image?id=5
+        // GET: api/Store/Image/5
         [HttpGet]
-        [Route("Image")]
+        [Route("Image/{id}")]
         [AllowAnonymous]
         public void DownloadImage(int id)
         {

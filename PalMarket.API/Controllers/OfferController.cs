@@ -38,7 +38,7 @@ namespace PalMarket.API.Controllers
 
             offers = offerService.GetBranchOffers(branchID);
 
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image?id=";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
             offersDTO = offers.Select(a => new OfferDTO
             {
                 OfferID = a.OfferID,
@@ -64,7 +64,7 @@ namespace PalMarket.API.Controllers
 
             offers = offerService.GetBranchOffers(branchID);
 
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image?id=";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
             offersDTO = offers.Select(a => new OfferDTO
             {
                 OfferID = a.OfferID,
@@ -94,15 +94,15 @@ namespace PalMarket.API.Controllers
             }
 
             offerDTO = Mapper.Map<Offer, OfferDTO>(offer);
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image?id=";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
             offerDTO.ImageUrl = offer.Image != null ? baseImageUrl + offerDTO.OfferID : null;
 
             return Ok(offerDTO);
         }
 
-        // POST: api/Offer/Image?id=5
+        // POST: api/Offer/Image/5
         [HttpPost]
-        [Route("Image")]
+        [Route("Image/{id}")]
         public IHttpActionResult UploadImage(int id)
         {
             HttpPostedFile file = HttpContext.Current.Request.Files[0];
@@ -130,9 +130,9 @@ namespace PalMarket.API.Controllers
             return Ok();
         }
 
-        // GET: api/Offer/Image?id=5
+        // GET: api/Offer/Image/5
         [HttpGet]
-        [Route("Image")]
+        [Route("Image/{id}")]
         [AllowAnonymous]
         public void DownloadImage(int id)
         {

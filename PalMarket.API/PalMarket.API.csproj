@@ -201,6 +201,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Autofac\WebModule.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
+    <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\OfferController.cs" />
     <Compile Include="DTOs\BranchDTO.cs" />

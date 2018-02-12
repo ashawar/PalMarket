@@ -14,6 +14,8 @@ namespace PalMarket.Model
         public string Latitude { get; set; }
         public int CityID { get; set; }
         public int StoreID { get; set; }
+        public byte[] Prices { get; set; }
+        public string PricesFileName { get; set; }
 
         public virtual City City { get; set; }
         public virtual Store Store { get; set; }
