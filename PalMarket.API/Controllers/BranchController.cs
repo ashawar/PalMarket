@@ -98,7 +98,7 @@ namespace PalMarket.API.Controllers
 
             string pricesUrl = Utilities.GetBaseUrl() + "/api/branch/prices/" + id;
 
-            return Created(pricesUrl, new { pricesUrl = pricesUrl });
+            return Created(pricesUrl, new { PricesUrl = pricesUrl });
         }
 
         // GET: api/Branch/Prices/5
