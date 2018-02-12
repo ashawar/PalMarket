@@ -100,7 +100,9 @@ namespace PalMarket.API.Controllers
             storeService.UpdateStore(store);
             storeService.SaveStore();
 
-            return Ok();
+            string imageUrl = Utilities.GetBaseUrl() + "/api/store/image/" + id;
+
+            return Created(imageUrl, new { ImageUrl = imageUrl });
         }
 
         // GET: api/Store/Image/5

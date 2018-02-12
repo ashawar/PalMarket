@@ -96,7 +96,9 @@ namespace PalMarket.API.Controllers
             branchService.UpdateBranch(branch);
             branchService.SaveBranch();
 
-            return Ok();
+            string pricesUrl = Utilities.GetBaseUrl() + "/api/branch/prices/" + id;
+
+            return Created(pricesUrl, new { pricesUrl = pricesUrl });
         }
 
         // GET: api/Branch/Prices/5

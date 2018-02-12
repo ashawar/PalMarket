@@ -127,7 +127,9 @@ namespace PalMarket.API.Controllers
             offerService.UpdateOffer(offer);
             offerService.SaveOffer();
 
-            return Ok();
+            string imageUrl = Utilities.GetBaseUrl() + "/api/offer/image/" + offer.OfferID;
+
+            return Created(imageUrl, new { ImageUrl = imageUrl });
         }
 
         // GET: api/Offer/Image/5
