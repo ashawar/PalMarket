@@ -17,7 +17,7 @@ namespace PalMarket.Data.Configuration
             Property(g => g.DateStart).IsRequired();
             Property(g => g.OldPrice).HasPrecision(8, 2);
             Property(g => g.NewPrice).HasPrecision(8, 2);
-            Property(g => g.Image).IsOptional();
+            Property(g => g.ImageFileName).IsOptional();
             Property(g => g.ImageFileName).IsOptional().HasMaxLength(50);
         }
     }

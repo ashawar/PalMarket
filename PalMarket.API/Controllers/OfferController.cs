@@ -47,7 +47,7 @@ namespace PalMarket.API.Controllers
                 NewPrice = a.NewPrice,
                 DateStart = a.DateStart,
                 DateEnd = a.DateEnd,
-                ImageUrl = a.Image != null ? baseImageUrl + a.OfferID : null,
+                ImageUrl = a.ImageFileName != null ? baseImageUrl + a.OfferID : null,
                 DateCreated = a.DateCreated,
                 DateUpdated = a.DateUpdated
             });
@@ -73,7 +73,7 @@ namespace PalMarket.API.Controllers
                 NewPrice = a.NewPrice,
                 DateStart = a.DateStart,
                 DateEnd = a.DateEnd,
-                ImageUrl = a.Image != null ? baseImageUrl + a.OfferID : null,
+                ImageUrl = a.ImageFileName != null ? baseImageUrl + a.OfferID : null,
                 DateCreated = a.DateCreated,
                 DateUpdated = a.DateUpdated
             });
@@ -95,7 +95,7 @@ namespace PalMarket.API.Controllers
 
             offerDTO = Mapper.Map<Offer, OfferDTO>(offer);
             string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
-            offerDTO.ImageUrl = offer.Image != null ? baseImageUrl + offerDTO.OfferID : null;
+            offerDTO.ImageUrl = offer.ImageFileName != null ? baseImageUrl + offerDTO.OfferID : null;
 
             return Ok(offerDTO);
         }
@@ -117,15 +117,26 @@ namespace PalMarket.API.Controllers
             }
 
             Offer offer = offerService.GetOffer(id);
+
+            // Fill the file name and size 
             offer.ImageFileName = file.FileName;
+            offer.ImageFileSize = file.ContentLength;
 
-            using (var binaryReader = new BinaryReader(file.InputStream))
-            {
-                offer.Image = binaryReader.ReadBytes(file.ContentLength);
-            }
-
+            // Save the record
             offerService.UpdateOffer(offer);
             offerService.SaveOffer();
+
+            // If the record has been saved successfully then save the file
+            string path = ConfigHelper.GetDocumentsFolderPath() + "Offers/Images/";
+
+            if (!System.IO.Directory.Exists(path))
+            {
+                System.IO.Directory.CreateDirectory(path);
+            }
+
+            path += id.ToString();
+
+            file.SaveAs(path);
 
             string imageUrl = Utilities.GetBaseUrl() + "/api/offer/image/" + offer.OfferID;
 
@@ -138,14 +149,25 @@ namespace PalMarket.API.Controllers
         [AllowAnonymous]
         public void DownloadImage(int id)
         {
+            // Get the offer record
             Offer offer = offerService.GetOffer(id);
+            string path = ConfigHelper.GetDocumentsFolderPath() + "Offers/Images/" + id;
 
+            // Write the file directly to the HTTP content output stream.
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Response.ContentType = MimeMapping.GetMimeMapping(offer.ImageFileName);
-            HttpContext.Current.Response.OutputStream.Write(offer.Image, 0, offer.Image.Length);
-            HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + offer.ImageFileName);
-            HttpContext.Current.Response.AddHeader("Content-Length", offer.Image.Length.ToString());
+            HttpContext.Current.Response.WriteFile(path);
+            HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=\"" + offer.ImageFileName + "\"");
+            HttpContext.Current.Response.AddHeader("FileName", offer.ImageFileName);
+            HttpContext.Current.Response.AddHeader("Content-Length", offer.ImageFileSize.ToString());
             HttpContext.Current.Response.End();
+
+            //HttpContext.Current.Response.Clear();
+            //HttpContext.Current.Response.ContentType = MimeMapping.GetMimeMapping(offer.ImageFileName);
+            //HttpContext.Current.Response.OutputStream.Write(offer.Image, 0, offer.Image.Length);
+            //HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + offer.ImageFileName);
+            //HttpContext.Current.Response.AddHeader("Content-Length", offer.Image.Length.ToString());
+            //HttpContext.Current.Response.End();
         }
 
         // POST: api/Offer

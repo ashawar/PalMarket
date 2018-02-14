@@ -15,7 +15,7 @@ namespace PalMarket.Data.Configuration
             ToTable("Stores");
             Property(g => g.Name).IsRequired().HasMaxLength(100);
             Property(g => g.QRCode).IsRequired().HasMaxLength(100);
-            Property(g => g.Image).IsOptional();
+            Property(g => g.ImageFileSize).IsOptional();
             Property(g => g.ImageFileName).IsOptional().HasMaxLength(50);
         }
     }

@@ -16,8 +16,8 @@ namespace PalMarket.Model
         public DateTime? DateUpdated { get; set; }
         public decimal? OldPrice { get; set; }
         public decimal? NewPrice { get; set; }
-        public byte[] Image { get; set; }
         public string ImageFileName { get; set; }
+        public int ImageFileSize { get; set; }
 
         public int BranchID { get; set; }
         public Branch Branch { get; set; }

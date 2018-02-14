@@ -13,8 +13,8 @@ namespace PalMarket.Model
         public string QRCode { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
-        public byte[] Image { get; set; }
         public string ImageFileName { get; set; }
+        public int ImageFileSize { get; set; }
 
         public virtual List<Branch> Branches { get; set; }
         public virtual List<StoreDevice> StoreDevices { get; set; }

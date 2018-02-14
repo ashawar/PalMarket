@@ -67,7 +67,7 @@ namespace PalMarket.API.Controllers
             storeDTO = Mapper.Map<Store, StoreDTO>(store);
 
             string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image/";
-            storeDTO.ImageUrl = baseImageUrl + storeDTO.StoreID;
+            storeDTO.ImageUrl = store.ImageFileName != null ? baseImageUrl + storeDTO.StoreID : null;
 
             return Ok(storeDTO);
         }
@@ -90,15 +90,26 @@ namespace PalMarket.API.Controllers
             }
 
             Store store = storeService.GetStore(id);
+
+            // Fill the file name and size 
             store.ImageFileName = file.FileName;
+            store.ImageFileSize = file.ContentLength;
 
-            using (var binaryReader = new BinaryReader(file.InputStream))
-            {
-                store.Image = binaryReader.ReadBytes(file.ContentLength);
-            }
-
+            // Save the record
             storeService.UpdateStore(store);
             storeService.SaveStore();
+
+            // If the record has been saved successfully then save the file
+            string path = ConfigHelper.GetDocumentsFolderPath() + "Stores/Images/";
+
+            if (!System.IO.Directory.Exists(path))
+            {
+                System.IO.Directory.CreateDirectory(path);
+            }
+
+            path += id.ToString();
+
+            file.SaveAs(path);
 
             string imageUrl = Utilities.GetBaseUrl() + "/api/store/image/" + id;
 
@@ -111,14 +122,25 @@ namespace PalMarket.API.Controllers
         [AllowAnonymous]
         public void DownloadImage(int id)
         {
+            // Get the store record
             Store store = storeService.GetStore(id);
+            string path = ConfigHelper.GetDocumentsFolderPath() + "Stores/Images/" + id;
 
+            // Write the file directly to the HTTP content output stream.
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Response.ContentType = MimeMapping.GetMimeMapping(store.ImageFileName);
-            HttpContext.Current.Response.OutputStream.Write(store.Image, 0, store.Image.Length);
+            HttpContext.Current.Response.WriteFile(path);
             HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + store.ImageFileName);
-            HttpContext.Current.Response.AddHeader("Content-Length", store.Image.Length.ToString());
+            HttpContext.Current.Response.AddHeader("FileName", store.ImageFileName);
+            HttpContext.Current.Response.AddHeader("Content-Length", store.ImageFileSize.ToString());
             HttpContext.Current.Response.End();
+
+            //HttpContext.Current.Response.Clear();
+            //HttpContext.Current.Response.ContentType = MimeMapping.GetMimeMapping(store.ImageFileName);
+            //HttpContext.Current.Response.OutputStream.Write(store.Image, 0, store.Image.Length);
+            //HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + store.ImageFileName);
+            //HttpContext.Current.Response.AddHeader("Content-Length", store.Image.Length.ToString());
+            //HttpContext.Current.Response.End();
         }
     }
 }

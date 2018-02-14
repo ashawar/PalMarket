@@ -26,7 +26,7 @@ namespace PalMarket.Data.Repositories
                        {
                            StoreID = a.StoreID,
                            Name = a.Name,
-                           Image = a.Image,
+                           Image = a.ImageFileName,
                            QRCode = a.QRCode,
                            DateCreated = a.DateCreated,
                            DateUpdated = a.DateUpdated,
