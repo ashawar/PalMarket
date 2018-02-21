@@ -27,7 +27,7 @@ namespace PalMarket.API.Controllers
             this.storeService = storeService;
         }
 
-        // GET: api/Store?deviceCode=1002
+        // GET: api/store?deviceCode=1002
         public IHttpActionResult GetStores(string deviceCode)
         {
             IEnumerable<StoreDTO> storesDTO;
@@ -35,7 +35,9 @@ namespace PalMarket.API.Controllers
 
             stores = storeService.GetStores(deviceCode);
 
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image/";
+            //string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image/";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/file.asmx/StoreImage?id=";
+
             storesDTO = stores.Select(a => new StoreDTO
             {
                 StoreID = a.StoreID,
@@ -52,7 +54,7 @@ namespace PalMarket.API.Controllers
             return Ok(storesDTO);
         }
 
-        // GET: api/Store/5
+        // GET: api/store/5
         [ResponseType(typeof(Store))]
         public IHttpActionResult GetStore(int id)
         {
@@ -66,16 +68,16 @@ namespace PalMarket.API.Controllers
 
             storeDTO = Mapper.Map<Store, StoreDTO>(store);
 
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image/";
+            //string baseImageUrl = Utilities.GetBaseUrl() + "/api/Store/Image/";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/file.asmx/StoreImage?id=";
             storeDTO.ImageUrl = store.ImageFileName != null ? baseImageUrl + storeDTO.StoreID : null;
 
             return Ok(storeDTO);
         }
 
-        // POST: api/Store/Image/5
+        // POST: api/store/image/5
         [HttpPost]
-        [Route("Image/{id}")]
-        [AllowAnonymous]
+        [Route("image/{id}")]
         public IHttpActionResult UploadImage(int id)
         {
             HttpPostedFile file = HttpContext.Current.Request.Files[0];
@@ -111,15 +113,15 @@ namespace PalMarket.API.Controllers
 
             file.SaveAs(path);
 
-            string imageUrl = Utilities.GetBaseUrl() + "/api/store/image/" + id;
+            //string imageUrl = Utilities.GetBaseUrl() + "/api/store/image/" + id;
+            string imageUrl = Utilities.GetBaseUrl() + "/file.asmx/StoreImage?id=" + id;
 
             return Created(imageUrl, new { ImageUrl = imageUrl });
         }
 
-        // GET: api/Store/Image/5
+        // GET: api/store/Image/5
         [HttpGet]
-        [Route("Image/{id}")]
-        [AllowAnonymous]
+        [Route("image/{id}")]
         public void DownloadImage(int id)
         {
             // Get the store record
@@ -127,13 +129,12 @@ namespace PalMarket.API.Controllers
             string path = ConfigHelper.GetDocumentsFolderPath() + "Stores/Images/" + id;
 
             // Write the file directly to the HTTP content output stream.
-            HttpContext.Current.Response.Clear();
             HttpContext.Current.Response.ContentType = MimeMapping.GetMimeMapping(store.ImageFileName);
             HttpContext.Current.Response.WriteFile(path);
             HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=" + store.ImageFileName);
             HttpContext.Current.Response.AddHeader("FileName", store.ImageFileName);
             HttpContext.Current.Response.AddHeader("Content-Length", store.ImageFileSize.ToString());
-            HttpContext.Current.Response.End();
+            HttpContext.Current.Response.Flush();
 
             //HttpContext.Current.Response.Clear();
             //HttpContext.Current.Response.ContentType = MimeMapping.GetMimeMapping(store.ImageFileName);

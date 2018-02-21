@@ -27,4 +27,10 @@ namespace PalMarket.Model
         ThisMonth = 9,
         LastMonth = 10,
     }
+
+    public enum DeviceType
+    {
+        Android = 1,
+        iOS = 2
+    }
 }

@@ -28,7 +28,7 @@ namespace PalMarket.API.Controllers
             this.offerService = offerService;
         }
 
-        // GET: api/Offer
+        // GET: api/offer
         public IHttpActionResult GetOffers()
         {
             IEnumerable<OfferDTO> offersDTO;
@@ -38,7 +38,9 @@ namespace PalMarket.API.Controllers
 
             offers = offerService.GetBranchOffers(branchID);
 
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
+            //string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/file.asmx/OfferImage?id=";
+
             offersDTO = offers.Select(a => new OfferDTO
             {
                 OfferID = a.OfferID,
@@ -55,7 +57,7 @@ namespace PalMarket.API.Controllers
             return Ok(offersDTO);
         }
 
-        // GET: api/Offer?branchID=1
+        // GET: api/offer?branchID=1
         [AllowAnonymous]
         public IHttpActionResult GetOffers(int branchID)
         {
@@ -64,7 +66,9 @@ namespace PalMarket.API.Controllers
 
             offers = offerService.GetBranchOffers(branchID);
 
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
+            //string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/file.asmx/OfferImage?id=";
+
             offersDTO = offers.Select(a => new OfferDTO
             {
                 OfferID = a.OfferID,
@@ -81,7 +85,7 @@ namespace PalMarket.API.Controllers
             return Ok(offersDTO);
         }
 
-        // GET: api/Offer/5
+        // GET: api/offer/5
         [ResponseType(typeof(Offer))]
         public IHttpActionResult GetOffer(int id)
         {
@@ -94,15 +98,16 @@ namespace PalMarket.API.Controllers
             }
 
             offerDTO = Mapper.Map<Offer, OfferDTO>(offer);
-            string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
+            //string baseImageUrl = Utilities.GetBaseUrl() + "/api/Offer/Image/";
+            string baseImageUrl = Utilities.GetBaseUrl() + "/file.asmx/OfferImage?id=";
             offerDTO.ImageUrl = offer.ImageFileName != null ? baseImageUrl + offerDTO.OfferID : null;
 
             return Ok(offerDTO);
         }
 
-        // POST: api/Offer/Image/5
+        // POST: api/offer/image/5
         [HttpPost]
-        [Route("Image/{id}")]
+        [Route("image/{id}")]
         public IHttpActionResult UploadImage(int id)
         {
             HttpPostedFile file = HttpContext.Current.Request.Files[0];
@@ -138,14 +143,15 @@ namespace PalMarket.API.Controllers
 
             file.SaveAs(path);
 
-            string imageUrl = Utilities.GetBaseUrl() + "/api/offer/image/" + offer.OfferID;
+            //string imageUrl = Utilities.GetBaseUrl() + "/api/offer/image/" + offer.OfferID;
+            string imageUrl = Utilities.GetBaseUrl() + "/file.asmx/OfferImage?id=" + offer.OfferID;
 
             return Created(imageUrl, new { ImageUrl = imageUrl });
         }
 
-        // GET: api/Offer/Image/5
+        // GET: api/offer/image/5
         [HttpGet]
-        [Route("Image/{id}")]
+        [Route("image/{id}")]
         [AllowAnonymous]
         public void DownloadImage(int id)
         {
@@ -170,7 +176,7 @@ namespace PalMarket.API.Controllers
             //HttpContext.Current.Response.End();
         }
 
-        // POST: api/Offer
+        // POST: api/offer
         [ResponseType(typeof(Offer))]
         [ValidateModel]
         public IHttpActionResult PostOffer([FromBody] OfferDTO offerDTO)
@@ -200,7 +206,7 @@ namespace PalMarket.API.Controllers
             return CreatedAtRoute("DefaultApi", new { id = offer.OfferID }, offerDTO);
         }
 
-        // PUT: api/Offer/5
+        // PUT: api/offer/5
         [ResponseType(typeof(void))]
         [ValidateModel]
         public IHttpActionResult PutOffer(int id, [FromBody] OfferDTO offerDTO)
@@ -226,7 +232,7 @@ namespace PalMarket.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // DELETE: api/Offer/5
+        // DELETE: api/offer/5
         [ResponseType(typeof(Offer))]
         public IHttpActionResult DeleteOffer(int id)
         {

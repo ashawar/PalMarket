@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DetailedModels\LookupItem.cs" />
     <Compile Include="DetailedModels\DetailedStore.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Models\Branch.cs" />

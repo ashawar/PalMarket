@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace PalMarket.Data.Repositories
 {
-    public class DeviceRepository : RepositoryBase<Device>, IDeviceRepository
+    public class LookupRepository : RepositoryBase<City>, ILookupRepository
     {
-        public DeviceRepository(IDbFactory dbFactory)
+        public LookupRepository(IDbFactory dbFactory)
             : base(dbFactory) { }
 
         public List<Device> GetByBranch(int branchId)
@@ -30,20 +30,20 @@ namespace PalMarket.Data.Repositories
             return lst;
         }
 
-        public Device GetByCode(string deviceCode)
+        public Dictionary<string, List<LookupItem>> GetLookups()
         {
-            return DbContext.Devices.FirstOrDefault(a => a.DeviceCode == deviceCode);
-        }
+            var result = new Dictionary<string, List<LookupItem>>();
 
-        public void Subscribe(StoreDevice subscribtion)
-        {
-            DbContext.StoreDevices.Add(subscribtion);
-        }
+            DbContext.Configuration.LazyLoadingEnabled = false;
 
-        public override void Delete(Device device)
-        {
-            DbContext.StoreDevices.RemoveRange(device.StoreDevices);
-            base.Delete(device);
+            var cities = DbContext.Cities.ToList().Select(a => new LookupItem
+            {
+                ItemID = a.CityID,
+                Display = a.Name
+            }).ToList();
+
+            result.Add("Cities", cities);
+            return result;
         }
     }
 }

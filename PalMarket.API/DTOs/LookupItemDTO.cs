@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PalMarket.API.DTOs
 {
-    public class CityDTO
+    public class LookupItemDTO
     {
-        public int CityID { get; set; }
-        public string Name { get; set; }
+        public int LookupItemID { get; set; }
+        public string Display { get; set; }
     }
 }

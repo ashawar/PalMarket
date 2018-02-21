@@ -16,6 +16,7 @@ using System.IO;
 
 namespace PalMarket.API.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/branch")]
     [ControllerExceptionFilter]
     public class BranchController : ApiController
@@ -27,8 +28,8 @@ namespace PalMarket.API.Controllers
             this.branchService = branchService;
         }
 
-        // GET: api/Branch/Current
-        [Route("Current")]
+        // GET: api/branch/current
+        [Route("current")]
         [ResponseType(typeof(Branch))]
         public IHttpActionResult GetCurrentBranch()
         {
@@ -47,8 +48,8 @@ namespace PalMarket.API.Controllers
             return Ok(branchDTO);
         }
 
-        // PUT: api/Branch/Current
-        [Route("Current")]
+        // PUT: api/branch/current
+        [Route("current")]
         [ResponseType(typeof(void))]
         [ValidateModel]
         public IHttpActionResult PutCurrentBranch([FromBody] BranchSaveDTO branchDTO)
@@ -73,9 +74,9 @@ namespace PalMarket.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Branch/Prices/5
+        // POST: api/branch/prices/5
         [HttpPost]
-        [Route("Prices/{id}")]
+        [Route("prices/{id}")]
         [AllowAnonymous]
         public IHttpActionResult UploadPrices(int id)
         {
@@ -96,14 +97,15 @@ namespace PalMarket.API.Controllers
             branchService.UpdateBranch(branch);
             branchService.SaveBranch();
 
-            string pricesUrl = Utilities.GetBaseUrl() + "/api/branch/prices/" + id;
+            //string pricesUrl = Utilities.GetBaseUrl() + "/api/branch/prices/" + id;
+            string pricesUrl = Utilities.GetBaseUrl() + "/file.asmx/BranchPrices?id=" + id;
 
             return Created(pricesUrl, new { PricesUrl = pricesUrl });
         }
 
-        // GET: api/Branch/Prices/5
+        // GET: api/branch/prices/5
         [HttpGet]
-        [Route("Prices/{id}")]
+        [Route("prices/{id}")]
         [AllowAnonymous]
         public void DownloadPrices(int id)
         {

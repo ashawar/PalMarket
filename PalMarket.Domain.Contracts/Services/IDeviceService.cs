@@ -10,8 +10,10 @@ namespace PalMarket.Domain.Contracts.Services
     // Operations you want to expose
     public interface IDeviceService
     {
+        List<Device> GetByBranch(int branchId);
         Device GetByCode(string deviceCode);
         void AddDevice(Device device);
+        void DeleteDevice(Device device);
         void Subscribe(StoreDevice subscribtion);
         void SaveDevice();
     }

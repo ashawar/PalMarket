@@ -26,7 +26,7 @@ namespace PalMarket.API.Controllers
             this.storeService = storeService;
         }
 
-        // POST: api/Device
+        // POST: api/device
         [ResponseType(typeof(Device))]
         [ValidateModel]
         public IHttpActionResult PostDevice([FromBody] DeviceDTO deviceDTO)
@@ -42,7 +42,7 @@ namespace PalMarket.API.Controllers
             return CreatedAtRoute("DefaultApi", new { id = device.DeviceID }, deviceDTO);
         }
 
-        // POST: api/Device/Subscribe
+        // POST: api/device/subscribe
         [HttpPost]
         [Route("subscribe")]
         [ResponseType(typeof(Device))]
@@ -74,6 +74,25 @@ namespace PalMarket.API.Controllers
             deviceService.SaveDevice();
 
             return Ok();
+        }
+
+        // DELETE: api/device/3c81ee32-e672-47a0-98f1-e4dd07e895cb
+        [Route("{code}")]
+        [ResponseType(typeof(Device))]
+        public IHttpActionResult DeleteDevice(string code)
+        {
+            Device device = deviceService.GetByCode(code);
+            if (device == null)
+            {
+                return NotFound();
+            }
+
+            deviceService.DeleteDevice(device);
+            deviceService.SaveDevice();
+
+            DeviceDTO deviceDTO = Mapper.Map<Device, DeviceDTO>(device);
+
+            return Ok(deviceDTO);
         }
     }
 }

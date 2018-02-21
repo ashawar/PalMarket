@@ -23,6 +23,11 @@ namespace PalMarket.Domain
 
         #region IDeviceService Members
 
+        public List<Device> GetByBranch(int branchId)
+        {
+            return deviceRepository.GetByBranch(branchId);
+        }
+
         public Device GetByCode(string deviceCode)
         {
             return deviceRepository.GetByCode(deviceCode);
@@ -31,6 +36,11 @@ namespace PalMarket.Domain
         public void AddDevice(Device device)
         {
             deviceRepository.Add(device);
+        }
+
+        public void DeleteDevice(Device device)
+        {
+            deviceRepository.Delete(device);
         }
 
         public void Subscribe(StoreDevice subscribtion)

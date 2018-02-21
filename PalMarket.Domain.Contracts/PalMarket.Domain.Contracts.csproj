@@ -40,12 +40,15 @@
   <ItemGroup>
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Repositories\IBranchRepository.cs" />
+    <Compile Include="Repositories\ILookupRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\IOfferRepository.cs" />
     <Compile Include="Repositories\IDeviceRepository.cs" />
     <Compile Include="Repositories\IStoreRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Services\IBranchService.cs" />
+    <Compile Include="Services\ILookupService.cs" />
+    <Compile Include="Services\INotificationService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\IDeviceService.cs" />
     <Compile Include="Services\IStoreService.cs" />

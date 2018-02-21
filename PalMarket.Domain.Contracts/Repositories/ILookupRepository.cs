@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace PalMarket.Domain.Contracts.Repositories
 {
-    public interface IDeviceRepository : IRepository<Device>
+    public interface ILookupRepository
     {
-        List<Device> GetByBranch(int branchId);
-        Device GetByCode(string deviceCode);
-        void Subscribe(StoreDevice subscribtion);
+        Dictionary<string, List<LookupItem>> GetLookups();
     }
 }
